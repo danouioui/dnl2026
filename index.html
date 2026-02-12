@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>새해 만다라트 플래너</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+    <main class="app">
+      <header class="hero">
+        <h1>✨ 새해 만다라트 플래너</h1>
+        <p>가운데에 큰 목표를 적고, 8개의 핵심 계획과 각 계획의 세부 실천 8개를 채워보세요.</p>
+      </header>
+
+      <section class="panel overview-panel">
+        <div class="panel-header">
+          <h2>기본 만다라트 (3 × 3)</h2>
+          <span class="hint">가운데 칸 = 올해의 제목/핵심 목표</span>
+        </div>
+        <div id="overview-grid" class="mandalart-grid"></div>
+      </section>
+
+      <section class="panel detail-panel">
+        <div class="panel-header">
+          <h2>세부 계획 확장</h2>
+          <span id="active-goal-label" class="hint">상단 만다라트의 바깥 칸(8개) 중 하나를 눌러 확장하세요.</span>
+        </div>
+        <div id="detail-grid" class="mandalart-grid"></div>
+      </section>
+
+      <section class="panel tools-panel">
+        <div class="panel-header">
+          <h2>내보내기 & 복사</h2>
+        </div>
+        <div class="button-row">
+          <button id="copy-btn" class="action-btn">📋 계획 전체 복사 (미리알림용)</button>
+          <button id="export-btn" class="action-btn primary">🖼️ 만다라트 이미지로 저장</button>
+        </div>
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <template id="cell-template">
+      <label class="cell">
+        <textarea rows="3" maxlength="80" placeholder="계획을 입력하세요"></textarea>
+      </label>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
