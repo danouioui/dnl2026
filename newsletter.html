@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bio Marketing Studio | Newsletter</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand"><span class="brand-mark">B</span><span>Bio Marketing Studio</span></a>
+        <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+        <nav class="main-nav" aria-label="주 메뉴">
+          <a href="index.html">소개</a>
+          <a href="work.html">프로젝트</a>
+          <a class="active" href="newsletter.html">뉴스레터</a>
+          <a href="contact.html">연락하기</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page-main">
+      <section class="page-head">
+        <p class="eyebrow">MONTHLY PAPER BRIEF</p>
+        <h1>논문을 전략으로 바꾸는 월간 뉴스레터</h1>
+        <p>
+          매달 핵심 바이오/생명과학 논문을 선별해 마케팅 관점의 인사이트로 정리합니다.
+        </p>
+      </section>
+
+      <section class="newsletter-layout">
+        <div class="card subscribe-box">
+          <h2>구독 안내</h2>
+          <p>
+            최신 논문 요약, 시장 임팩트, 실무 활용 아이디어까지 한 번에 받아보세요.
+          </p>
+          <form class="subscribe-form">
+            <label for="email">이메일</label>
+            <input id="email" type="email" placeholder="you@company.com" required />
+            <button type="submit" class="btn btn-primary">구독 신청</button>
+          </form>
+          <small>* 현재는 데모 폼이며 실제 발행 전 메일 서비스 연동이 필요합니다.</small>
+        </div>
+
+        <div class="card">
+          <h2>발행 목록</h2>
+          <ul class="newsletter-list">
+            <li>
+              <a href="posts/2026-01.html">
+                <span>2026년 1월호</span>
+                <strong>AI 기반 신약개발 논문 3선: 시장 커뮤니케이션 포인트</strong>
+              </a>
+            </li>
+            <li>
+              <a href="posts/2025-12.html">
+                <span>2025년 12월호</span>
+                <strong>마이크로바이옴 임상 연구 업데이트와 브랜드 인사이트</strong>
+              </a>
+            </li>
+            <li>
+              <a href="posts/2025-11.html">
+                <span>2025년 11월호</span>
+                <strong>정밀의학 트렌드: 타깃 세분화 전략에 주는 시사점</strong>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© 2026 Bio Marketing Studio. All rights reserved.</p>
+        <nav aria-label="보조 메뉴">
+          <a href="index.html">소개</a>
+          <a href="work.html">프로젝트</a>
+          <a href="newsletter.html">뉴스레터</a>
+          <a href="contact.html">연락하기</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="main.js"></script>
+  </body>
+</html>
