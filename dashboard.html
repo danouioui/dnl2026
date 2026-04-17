@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bio Marketing Studio | Personal Dashboard</title>
+    <meta
+      name="description"
+      content="일상, 여가, 취미, 목표, 학습을 통합 기록하고 구글 스프레드시트에 아카이빙하는 개인 대시보드"
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand"><span class="brand-mark">B</span><span>Bio Marketing Studio</span></a>
+        <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+        <nav class="main-nav" aria-label="주 메뉴">
+          <a href="index.html">소개</a>
+          <a href="work.html">프로젝트</a>
+          <a href="newsletter.html">뉴스레터</a>
+          <a href="contact.html">연락하기</a>
+          <a class="active" href="dashboard.html">개인 대시보드</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page-main dashboard-page">
+      <section class="page-head">
+        <p class="eyebrow">PERSONAL OPERATING SYSTEM</p>
+        <h1>나를 기록하고 성장시키는 개인 대시보드</h1>
+        <p>
+          일상 루틴, 여가/취미, 지향점, 학습 로그를 한 화면에서 관리하고 Google Sheets에 아카이빙합니다.
+        </p>
+      </section>
+
+      <section class="card dashboard-overview">
+        <div>
+          <h2>오늘의 포커스</h2>
+          <p id="todayFocus">저장된 포커스가 아직 없습니다. 아래 폼으로 첫 기록을 남겨보세요.</p>
+        </div>
+        <div class="streak-badges" aria-label="요약 지표">
+          <span id="logCountBadge">기록 0건</span>
+          <span id="studyBadge">학습 0분</span>
+          <span id="habitBadge">루틴 완료 0회</span>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card">
+          <h2>오늘 기록</h2>
+          <form id="dashboardForm" class="dashboard-form">
+            <label for="focus">오늘의 핵심 목표</label>
+            <input id="focus" name="focus" type="text" placeholder="예: 논문 뉴스레터 1편 완성" required />
+
+            <label for="routine">일상 루틴 점검</label>
+            <textarea id="routine" name="routine" rows="2" placeholder="예: 아침 산책 30분, 영양제, 집중 블록 2회"></textarea>
+
+            <label for="hobby">여가·취미 기록</label>
+            <textarea id="hobby" name="hobby" rows="2" placeholder="예: 재즈 플레이리스트 탐색, 수영 45분"></textarea>
+
+            <label for="study">공부·학습 로그(분)</label>
+            <input id="study" name="study" type="number" min="0" step="5" placeholder="예: 90" />
+
+            <label for="reflection">하루 회고</label>
+            <textarea id="reflection" name="reflection" rows="3" placeholder="잘한 점, 개선할 점, 내일의 한 줄"></textarea>
+
+            <button type="submit" class="btn btn-primary">기록 저장하기</button>
+            <small id="saveHint">Google Sheets API를 연결하면 클라우드에 아카이빙됩니다.</small>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>중장기 지향점 & 목표</h2>
+          <ul class="goal-list">
+            <li><strong>커리어:</strong> 바이오/헬스케어 마케팅 thought leader 포지셔닝</li>
+            <li><strong>브랜드:</strong> 월간 논문 큐레이션 채널 고도화 및 구독 성장</li>
+            <li><strong>라이프:</strong> 집중력 유지 루틴과 회복형 여가 균형</li>
+            <li><strong>학습:</strong> 데이터 분석 + 스토리텔링 역량 동시 강화</li>
+          </ul>
+          <p class="muted-note">
+            필요 시 이 섹션은 Google Sheets의 <code>goals</code> 시트에서 자동 로드되도록 확장할 수 있습니다.
+          </p>
+        </article>
+      </section>
+
+      <section class="card">
+        <h2>아카이브</h2>
+        <p class="muted-note">최신 기록 순으로 표시됩니다. 연결 전에는 브라우저 로컬 저장소를 사용합니다.</p>
+        <ul id="archiveList" class="archive-list"></ul>
+      </section>
+
+      <section class="card integration-guide">
+        <h2>Google Sheets 연동 가이드</h2>
+        <ol>
+          <li>Google Sheets에 <code>daily_logs</code> 시트를 만들고 헤더를 지정합니다: <code>date,focus,routine,hobby,study,reflection</code>.</li>
+          <li>Google Apps Script에서 웹 앱 API를 만들고 POST/GET을 허용합니다.</li>
+          <li>테스트 단계에서는 웹 앱 접근 권한을 <code>Anyone</code> 또는 <code>Anyone with Google account</code>로 배포해야 브라우저에서 호출됩니다.</li>
+          <li><code>main.js</code>의 <code>window.DASHBOARD_CONFIG.apiUrl</code>에 배포 URL을 넣습니다.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© 2026 Bio Marketing Studio. All rights reserved.</p>
+        <nav aria-label="보조 메뉴">
+          <a href="index.html">소개</a>
+          <a href="work.html">프로젝트</a>
+          <a href="newsletter.html">뉴스레터</a>
+          <a href="contact.html">연락하기</a>
+          <a href="dashboard.html">개인 대시보드</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      window.DASHBOARD_CONFIG = {
+        apiUrl: 'https://script.google.com/macros/s/AKfycbyyHFx9Spq1hErpPnUZwZLk-uLxX4ortpwlJQgGg5RCyUc-eihIhHnmEKJJl9_UT9HM/exec',
+      };
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>
