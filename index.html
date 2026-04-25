@@ -25,6 +25,16 @@
           <button id="briefBtn" class="btn btn-muted">아침 팝업 미리보기</button>
           <button id="enableNotifBtn" class="btn btn-muted">아침 알림 켜기</button>
         </div>
+
+        <div class="alarm-config">
+          <label for="alarmTime">아침 알림 시간</label>
+          <div class="alarm-row">
+            <input id="alarmTime" type="time" value="07:30" />
+            <button id="saveAlarmBtn" class="btn btn-muted">시간 저장</button>
+          </div>
+          <p id="alarmSummary" class="notice"></p>
+        </div>
+
         <p id="iosNotice" class="notice" hidden>
           iOS는 Safari에서 홈 화면에 추가한 뒤 실행해야 알림이 동작할 수 있어요.
         </p>

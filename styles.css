@@ -102,6 +102,31 @@ h2 {
   padding: 0.55rem 0.7rem;
 }
 
+.alarm-config {
+  margin-top: 0.85rem;
+}
+
+.alarm-config label {
+  display: block;
+  font-size: 0.86rem;
+  color: #41506a;
+  margin-bottom: 0.35rem;
+}
+
+.alarm-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#alarmTime {
+  border: 1px solid #d5e3fb;
+  border-radius: 12px;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  background: #fff;
+}
+
 .btn {
   border: 0;
   border-radius: 999px;
@@ -169,6 +194,15 @@ h2 {
 }
 
 @media (max-width: 720px) {
+  .alarm-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #alarmTime {
+    width: 100%;
+  }
+
   .app-shell {
     margin-top: 1rem;
   }
