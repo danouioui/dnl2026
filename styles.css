@@ -102,6 +102,12 @@ h2 {
   padding: 0.55rem 0.7rem;
 }
 
+.notice-strong {
+  background: #fff6e9;
+  border-color: #ffd7a1;
+  color: #6a4515;
+}
+
 .alarm-config {
   margin-top: 0.85rem;
 }

@@ -35,3 +35,15 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   event.waitUntil(clients.openWindow('/index.html'));
 });
+
+self.addEventListener('push', (event) => {
+  const payload = event.data?.json?.() || {};
+  const title = payload.title || '오늘의 출퇴근 코디';
+  const options = {
+    body: payload.body || '아침 코디 브리핑을 확인해보세요.',
+    icon: payload.icon || '/assets/favicon.svg',
+    badge: payload.badge || '/assets/favicon.svg'
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});

@@ -17,6 +17,7 @@ const iosNoticeEl = document.querySelector('#iosNotice');
 const alarmTimeInput = document.querySelector('#alarmTime');
 const saveAlarmBtn = document.querySelector('#saveAlarmBtn');
 const alarmSummaryEl = document.querySelector('#alarmSummary');
+const bgNoticeEl = document.querySelector('#bgNotice');
 
 const popup = document.querySelector('#morningPopup');
 const popupSummaryEl = document.querySelector('#popupSummary');
@@ -75,14 +76,25 @@ function formatKoreanTime(timeValue) {
   return `${ampm} ${displayHour}시 ${minute.toString().padStart(2, '0')}분`;
 }
 
+function getNotificationModeText() {
+  if (!('PushManager' in window)) {
+    return '이 기기/브라우저는 웹 푸시 지원이 제한되어 화면이 꺼진 상태 알림이 어려울 수 있어요.';
+  }
+
+  return '현재는 로컬 스케줄 모드입니다. 화면이 꺼진 상태 상시 알림은 웹 푸시 서버 연동 후 가능해요.';
+}
+
 function updateAlarmSummary() {
   const alarmTime = getStoredAlarmTime();
   const message =
     Notification.permission === 'granted'
-      ? `${formatKoreanTime(alarmTime)}에 알림이 울리도록 설정되었어요. (앱 실행 중/홈 화면 실행 상태에서 동작)`
+      ? `${formatKoreanTime(alarmTime)}에 알림이 울리도록 설정되었어요. (로컬 스케줄: 앱 실행/홈 화면 상태 권장)`
       : `${formatKoreanTime(alarmTime)}에 알림 예정입니다. 먼저 '아침 알림 켜기'로 권한을 허용해주세요.`;
 
   alarmSummaryEl.textContent = message;
+  if (bgNoticeEl) {
+    bgNoticeEl.textContent = getNotificationModeText();
+  }
 }
 
 async function registerServiceWorker() {
