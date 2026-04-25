@@ -92,46 +92,11 @@ h2 {
   margin-top: 0.9rem;
 }
 
-.notice {
-  margin: 0.8rem 0 0;
-  font-size: 0.9rem;
-  color: #41506a;
-  background: #edf4ff;
-  border: 1px solid #d5e3fb;
-  border-radius: 12px;
-  padding: 0.55rem 0.7rem;
-}
 
-.notice-strong {
-  background: #fff6e9;
-  border-color: #ffd7a1;
-  color: #6a4515;
-}
 
-.alarm-config {
-  margin-top: 0.85rem;
-}
 
-.alarm-config label {
-  display: block;
-  font-size: 0.86rem;
-  color: #41506a;
-  margin-bottom: 0.35rem;
-}
 
-.alarm-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
 
-#alarmTime {
-  border: 1px solid #d5e3fb;
-  border-radius: 12px;
-  padding: 0.55rem 0.65rem;
-  font: inherit;
-  background: #fff;
-}
 
 .btn {
   border: 0;
@@ -200,15 +165,6 @@ h2 {
 }
 
 @media (max-width: 720px) {
-  .alarm-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #alarmTime {
-    width: 100%;
-  }
-
   .app-shell {
     margin-top: 1rem;
   }

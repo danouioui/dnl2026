@@ -4,20 +4,12 @@ const DEFAULT_LOCATION = {
   longitude: 126.978
 };
 
-const DEFAULT_ALARM_TIME = '07:30';
-
 const weatherEl = document.querySelector('#weatherCard');
 const outfitListEl = document.querySelector('#outfitList');
 const itemBadgesEl = document.querySelector('#itemBadges');
 const detailPanelEl = document.querySelector('#detailPanel');
 const refreshBtn = document.querySelector('#refreshBtn');
 const briefBtn = document.querySelector('#briefBtn');
-const enableNotifBtn = document.querySelector('#enableNotifBtn');
-const iosNoticeEl = document.querySelector('#iosNotice');
-const alarmTimeInput = document.querySelector('#alarmTime');
-const saveAlarmBtn = document.querySelector('#saveAlarmBtn');
-const alarmSummaryEl = document.querySelector('#alarmSummary');
-const bgNoticeEl = document.querySelector('#bgNotice');
 
 const popup = document.querySelector('#morningPopup');
 const popupSummaryEl = document.querySelector('#popupSummary');
@@ -25,8 +17,6 @@ const speakBtn = document.querySelector('#speakBtn');
 const closePopupBtn = document.querySelector('#closePopup');
 
 let latestBrief = null;
-let swRegistration = null;
-let alarmCheckTimer = null;
 
 const weatherCodeMap = {
   0: '맑음',
@@ -49,160 +39,6 @@ const weatherCodeMap = {
   82: '폭우성 소나기',
   95: '뇌우'
 };
-
-function isIOS() {
-  const ua = window.navigator.userAgent.toLowerCase();
-  return /iphone|ipad|ipod/.test(ua) || (ua.includes('mac') && 'ontouchend' in document);
-}
-
-function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-}
-
-function getStoredAlarmTime() {
-  return localStorage.getItem('alarm-time') || DEFAULT_ALARM_TIME;
-}
-
-function getTodayKey(alarmTime) {
-  return `alarm-fired-${new Date().toISOString().slice(0, 10)}-${alarmTime}`;
-}
-
-function formatKoreanTime(timeValue) {
-  const [hourText, minuteText] = timeValue.split(':');
-  const hour = Number(hourText);
-  const minute = Number(minuteText);
-  const ampm = hour >= 12 ? '오후' : '오전';
-  const displayHour = hour % 12 || 12;
-  return `${ampm} ${displayHour}시 ${minute.toString().padStart(2, '0')}분`;
-}
-
-function getNotificationModeText() {
-  if (!('PushManager' in window)) {
-    return '이 기기/브라우저는 웹 푸시 지원이 제한되어 화면이 꺼진 상태 알림이 어려울 수 있어요.';
-  }
-
-  return '현재는 로컬 스케줄 모드입니다. 화면이 꺼진 상태 상시 알림은 웹 푸시 서버 연동 후 가능해요.';
-}
-
-function updateAlarmSummary() {
-  const alarmTime = getStoredAlarmTime();
-  const message =
-    Notification.permission === 'granted'
-      ? `${formatKoreanTime(alarmTime)}에 알림이 울리도록 설정되었어요. (로컬 스케줄: 앱 실행/홈 화면 상태 권장)`
-      : `${formatKoreanTime(alarmTime)}에 알림 예정입니다. 먼저 '아침 알림 켜기'로 권한을 허용해주세요.`;
-
-  alarmSummaryEl.textContent = message;
-  if (bgNoticeEl) {
-    bgNoticeEl.textContent = getNotificationModeText();
-  }
-}
-
-async function registerServiceWorker() {
-  if (!('serviceWorker' in navigator)) {
-    return;
-  }
-
-  try {
-    swRegistration = await navigator.serviceWorker.register('/sw.js');
-  } catch (error) {
-    console.warn('서비스워커 등록 실패', error);
-  }
-}
-
-async function showTestNotification() {
-  const title = '오늘의 출퇴근 코디';
-  const options = {
-    body: '아침 알림이 켜졌어요. 설정한 시간에 코디 브리핑을 확인해보세요.',
-    icon: 'assets/favicon.svg',
-    badge: 'assets/favicon.svg'
-  };
-
-  if (swRegistration) {
-    await swRegistration.showNotification(title, options);
-    return;
-  }
-
-  if ('Notification' in window) {
-    new Notification(title, options);
-  }
-}
-
-async function showScheduledNotification() {
-  const title = '오늘의 출퇴근 코디';
-  const options = {
-    body: latestBrief || '오늘 아침 코디 브리핑을 확인해보세요.',
-    icon: 'assets/favicon.svg',
-    badge: 'assets/favicon.svg'
-  };
-
-  if (swRegistration) {
-    await swRegistration.showNotification(title, options);
-  } else if ('Notification' in window) {
-    new Notification(title, options);
-  }
-}
-
-function checkAndTriggerAlarm() {
-  if (!('Notification' in window) || Notification.permission !== 'granted') {
-    return;
-  }
-
-  const alarmTime = getStoredAlarmTime();
-  const [alarmHour, alarmMinute] = alarmTime.split(':').map(Number);
-  const now = new Date();
-
-  if (now.getHours() !== alarmHour || now.getMinutes() !== alarmMinute) {
-    return;
-  }
-
-  const firedKey = getTodayKey(alarmTime);
-  if (localStorage.getItem(firedKey)) {
-    return;
-  }
-
-  localStorage.setItem(firedKey, '1');
-  showScheduledNotification();
-}
-
-function startAlarmScheduler() {
-  if (alarmCheckTimer) {
-    clearInterval(alarmCheckTimer);
-  }
-
-  checkAndTriggerAlarm();
-  alarmCheckTimer = setInterval(checkAndTriggerAlarm, 30 * 1000);
-}
-
-function saveAlarmTime() {
-  const value = alarmTimeInput.value || DEFAULT_ALARM_TIME;
-  localStorage.setItem('alarm-time', value);
-  updateAlarmSummary();
-  startAlarmScheduler();
-  alert(`아침 알림 시간이 ${formatKoreanTime(value)}으로 저장되었어요.`);
-}
-
-async function requestMorningNotification() {
-  if (!('Notification' in window)) {
-    alert('이 브라우저는 알림 기능을 지원하지 않아요.');
-    return;
-  }
-
-  if (isIOS() && !isStandalone()) {
-    iosNoticeEl.hidden = false;
-  }
-
-  const permission = await Notification.requestPermission();
-
-  if (permission === 'granted') {
-    await showTestNotification();
-    updateAlarmSummary();
-    alert('아침 알림 권한이 허용되었고 테스트 알림을 보냈어요.');
-    return;
-  }
-
-  updateAlarmSummary();
-  alert('알림 권한이 허용되지 않았어요. 브라우저 설정에서 알림을 허용해주세요.');
-}
 
 function getCommuteContext(date = new Date()) {
   const day = date.getDay();
@@ -325,18 +161,6 @@ function closePopup() {
   popup.classList.add('hidden');
 }
 
-function maybeShowMorningPopup() {
-  const now = new Date();
-  const key = `brief-shown-${now.toISOString().slice(0, 10)}`;
-  const hour = now.getHours();
-
-  if (hour >= 6 && hour <= 9 && !localStorage.getItem(key)) {
-    localStorage.setItem(key, '1');
-    openPopup();
-    speakBrief();
-  }
-}
-
 async function getLocation() {
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
@@ -386,8 +210,6 @@ async function fetchWeather() {
       },
       location.name
     );
-
-    maybeShowMorningPopup();
   } catch (error) {
     weatherEl.innerHTML = '<h2>현재 날씨</h2><p>날씨 정보를 가져오지 못했어요. 잠시 후 다시 시도해주세요.</p>';
   }
@@ -395,8 +217,6 @@ async function fetchWeather() {
 
 refreshBtn.addEventListener('click', fetchWeather);
 briefBtn.addEventListener('click', openPopup);
-enableNotifBtn.addEventListener('click', requestMorningNotification);
-saveAlarmBtn.addEventListener('click', saveAlarmTime);
 speakBtn.addEventListener('click', speakBrief);
 closePopupBtn.addEventListener('click', closePopup);
 popup.addEventListener('click', (event) => {
@@ -405,12 +225,4 @@ popup.addEventListener('click', (event) => {
   }
 });
 
-if (isIOS()) {
-  iosNoticeEl.hidden = false;
-}
-
-alarmTimeInput.value = getStoredAlarmTime();
-updateAlarmSummary();
-startAlarmScheduler();
-registerServiceWorker();
 fetchWeather();
