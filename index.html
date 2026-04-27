@@ -1,64 +1,14 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>데일리 코디 브리핑</title>
-    <meta
-      name="description"
-      content="체감 온도와 날씨 상태를 기반으로 30대 여성 직장인을 위한 출퇴근 코디를 매일 추천해주는 iOS 스타일 앱"
-    />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <meta name="theme-color" content="#f5f7fb" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Evening Dashboard</title>
   </head>
   <body>
-    <main class="app-shell">
-      <header class="ios-header card">
-        <p class="capsule">Morning Brief · iOS Style</p>
-        <h1>오늘의 출퇴근 코디</h1>
-        <p class="subtitle">체감 온도 + 강수 + 자외선 + 대기질 기준으로 자동 추천</p>
-        <div class="actions">
-          <button id="refreshBtn" class="btn">지금 날씨 다시 확인</button>
-          <button id="briefBtn" class="btn btn-muted">아침 팝업 미리보기</button>
-        </div>
-      </header>
-
-      <section class="grid">
-        <article class="card" id="weatherCard">
-          <h2>현재 날씨</h2>
-          <p class="loading">날씨 정보를 가져오는 중...</p>
-        </article>
-
-        <article class="card" id="outfitCard">
-          <h2>코디 추천</h2>
-          <ul class="list" id="outfitList"></ul>
-        </article>
-
-        <article class="card" id="itemsCard">
-          <h2>챙길 아이템</h2>
-          <div id="itemBadges" class="badges"></div>
-        </article>
-
-        <article class="card" id="detailCard">
-          <h2>상세 가이드</h2>
-          <div id="detailPanel" class="detail-panel"></div>
-        </article>
-      </section>
-    </main>
-
-    <aside id="morningPopup" class="popup hidden" aria-live="polite" aria-modal="true" role="dialog">
-      <div class="popup-panel">
-        <p class="capsule">오늘 아침 브리핑</p>
-        <h2 id="popupTitle">좋은 아침이에요 ☀️</h2>
-        <p id="popupSummary"></p>
-        <div class="actions">
-          <button id="speakBtn" class="btn">음성으로 듣기</button>
-          <button id="closePopup" class="btn btn-muted">닫기</button>
-        </div>
-      </div>
-    </aside>
-
-    <script src="main.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
